@@ -8,13 +8,25 @@
         "includeFiles": [
           "index.html",
           "assets/**",
-          ".env.example",
-          "google573851dad8cd2940.html"
+          "google573851dad8cd2940.html",
+          ".env.example"
         ]
       }
     }
   ],
   "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "server.js"
+    },
+    {
+      "src": "/google573851dad8cd2940.html",
+      "dest": "server.js"
+    },
+    {
+      "src": "/assets/(.*)",
+      "dest": "server.js"
+    },
     {
       "src": "/(.*)",
       "dest": "server.js"

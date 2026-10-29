@@ -263,6 +263,16 @@ app.post('/api/chat', async (req, res) => {
 
 app.use(express.static(ROOT, { index: 'index.html', extensions: ['html'] }));
 
+// Explicit routes for Vercel serverless (express.static may not resolve __dirname correctly)
+app.get('/google573851dad8cd2940.html', (req, res) => {
+  res.sendFile(path.join(ROOT, 'google573851dad8cd2940.html'));
+});
+
+// Serve index.html for all unmatched routes (SPA / fallback)
+app.get('*', (req, res) => {
+  res.sendFile(path.join(ROOT, 'index.html'));
+});
+
 // Export for Vercel serverless; also listen for local dev
 if (require.main === module) {
   app.listen(PORT, () => console.log(`HS AI Solutions portfolio with Moon running on port ${PORT}`));
