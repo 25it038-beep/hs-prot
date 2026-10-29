@@ -258,4 +258,10 @@ app.post('/api/chat', async (req, res) => {
 });
 
 app.use(express.static(ROOT, { index: 'index.html', extensions: ['html'] }));
-app.listen(PORT, () => console.log(`HS AI Solutions portfolio with Moon running on port ${PORT}`));
+
+// Export for Vercel serverless; also listen for local dev
+if (require.main === module) {
+  app.listen(PORT, () => console.log(`HS AI Solutions portfolio with Moon running on port ${PORT}`));
+}
+
+module.exports = app;
