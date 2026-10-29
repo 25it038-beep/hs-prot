@@ -69,7 +69,11 @@ function readMetrics() {
   }
 }
 
+// On Vercel the filesystem is read-only; detect and skip writes gracefully
+const IS_READONLY_FS = process.env.VERCEL === '1' || process.env.NOW_REGION !== undefined;
+
 function writeMetrics(m) {
+  if (IS_READONLY_FS) return; // silently skip on serverless/read-only envs
   fs.mkdirSync(DATA_DIR, { recursive: true });
   m.updatedAt = new Date().toISOString();
   const tmp = TELEMETRY_FILE + '.tmp';
@@ -159,7 +163,7 @@ app.post('/api/telemetry', (req, res) => {
     const label = clean(detail.label || 'interaction', 60).replace(/\s+/g, ' ') || 'interaction';
     m.interactions[label] = (m.interactions[label] || 0) + 1;
   }
-  try { writeMetrics(m); } catch (e) { return res.status(500).json({ error: 'Could not persist analytics' }); }
+  try { writeMetrics(m); } catch (e) { if (!IS_READONLY_FS) return res.status(500).json({ error: 'Could not persist analytics' }); }
   res.json({ ok: true });
 });
 
