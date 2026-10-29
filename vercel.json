@@ -8,7 +8,8 @@
         "includeFiles": [
           "index.html",
           "assets/**",
-          ".env.example"
+          ".env.example",
+          "google573851dad8cd2940.html"
         ]
       }
     }
